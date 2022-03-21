@@ -1,19 +1,21 @@
 # pokeshop
-A pokemon's shop. Enjoy doing your groceries! Using https://pokeapi.co/.
+A pokemons' shop. Enjoy doing your groceries! Using https://pokeapi.co/.
 
-## Install
+## Build Setup
 
-`$ git clone git@github.com:benjaminaudet/pokeshop.git`
+```bash
+# install dependencies
+$ npm install
 
-`$ cd pokeshop`
+# serve with hot reload at localhost:3000
+$ npm run dev
 
-`$ npm install`
+# build for production and launch server
+$ npm run build
+$ npm run start
 
-## Start in development mode
+# generate static project
+$ npm run generate
+```
 
-`$ npm run dev`
-
-## Start in production mode
-
-`$ npm start`
-
+For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
