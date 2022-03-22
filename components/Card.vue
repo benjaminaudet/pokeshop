@@ -1,18 +1,29 @@
 <template>
   <li class="cards__item">
     <div v-if="pokemonData.id" class="card">
+      <div class="card__content">
+        <div class="card__title">{{ pokemonData.name }}</div>
       <img
         class="card__image card__image--fence"
         :src="pokemonData.sprites.other['official-artwork'].front_default"
       />
-      <div class="card__content">
-        <div class="card__title">{{ pokemonData.name }}</div>
         <p class="card__text">
-          This is the shorthand for flex-grow, flex-shrink and flex-basis
-          combined. The second and third parameters (flex-shrink and flex-basis)
-          are optional. Default is 0 1 auto.
+          <ul>
+            <li>
+              <strong>id:</strong> {{pokemonData.id}}
+            </li>
+            <li>
+              <strong>Types:</strong>
+              <span v-for="(type, i) in pokemonData.types" :key="type.type.name">
+                {{type.type.name}}<span v-show="i < pokemonData.types.length - 1">,</span>
+              </span>
+            </li>
+            <li>
+
+            </li>
+          </ul>
         </p>
-        <button class="btn btn--block card__btn">Button</button>
+        <button class="btn btn--block card__btn">See in details</button>
       </div>
     </div>
   </li>
@@ -34,8 +45,8 @@ export default {
   },
   async fetch() {
     const pokemon = await P.getPokemonByName(this.pokemon.name);
-    console.log(pokemon);
     this.pokemonData = pokemon;
+    console.log(pokemon.id);
   },
   fetchOnServer: false,
 };
@@ -52,8 +63,6 @@ export default {
 *::before,
 *::after {
   box-sizing: border-box;
-  font-family: Roboto, sans-serif;
-  color: white;
 }
 
 img {
@@ -68,7 +77,14 @@ img {
   border-radius: 1rem;
   color: #696969;
   padding: 0.5rem;
-  text-transform: lowercase;
+}
+.btn:hover {
+  font-weight: 600;
+  background-color: #f33;
+  border: 1px solid #cccccc;
+  border-radius: 1rem;
+  color: #ffffff;
+  padding: 0.5rem;
 }
 
 .btn--block {
@@ -104,6 +120,7 @@ img {
   padding: 1rem;
 }
 .card__image {
+  margin-top: 20px;
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -116,17 +133,27 @@ img {
 }
 
 .card__title {
-  color: #696969;
+  color: #252525;
   font-size: 1.25rem;
-  font-weight: 300;
+  font-weight: 600;
   letter-spacing: 2px;
-  text-transform: uppercase;
+  text-transform: capitalize;
+  text-align: center;
 }
 
 .card__text {
-  flex: 1 1 auto;
   font-size: 0.875rem;
-  line-height: 1.5;
-  margin-bottom: 1.25rem;
+  text-align: left;
+  text-transform: capitalize;
+}
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-decoration: none;
+}
+ul {
+  margin-bottom: 10px;
 }
 </style>

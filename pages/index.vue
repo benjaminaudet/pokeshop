@@ -2,7 +2,13 @@
   <div>
     <Navbar :fn="loadMorePokemons" />
     <div class="divider" />
-    <Shopping :pokemons="pokemons" :loadMorePokemons="loadMorePokemons" />
+    <Shopping
+      v-on:limit-step-selected="onChangeLimitStepSelected"
+      :pokemons="pokemons"
+      :loadMorePokemons="loadMorePokemons"
+      :isFetching="isFetching"
+      :baseLimitStep="baseLimitStep"
+    />
   </div>
 </template>
 
@@ -15,7 +21,7 @@ import Shopping from "../components/Shopping.vue";
 const Pokedex = require("pokeapi-js-wrapper");
 const P = new Pokedex.Pokedex();
 
-const LIMIT_STEP = 10;
+const BASE_LIMIT_STEP = 20;
 
 export default Vue.extend({
   name: "IndexPage",
@@ -26,28 +32,39 @@ export default Vue.extend({
   data: () => {
     return {
       pokemons: [],
-      offset: -LIMIT_STEP,
+      offset: -BASE_LIMIT_STEP,
       maxOffset: 0,
       isFetching: true,
       page: 1,
+      baseLimitStep: BASE_LIMIT_STEP,
+      limitStep: BASE_LIMIT_STEP,
     };
   },
   async fetch() {
-    await this.loadMorePokemons(LIMIT_STEP * 2);
+    await this.loadMorePokemons(BASE_LIMIT_STEP);
   },
   fetchOnServer: false,
   methods: {
-    loadMorePokemons: async function (limit_step = LIMIT_STEP) {
+    onChangeLimitStepSelected: function (limitStep) {
+      this.limitStep = limitStep;
+    },
+    loadMorePokemons: async function (_limitStep) {
+      if (!_limitStep) {
+        _limitStep = this.limitStep;
+      }
+      console.log(_limitStep);
       this.isFetching = true;
       const pokemons = await P.getPokemonsList({
-        offset: (this.offset += limit_step),
-        limit: limit_step,
+        offset: (this.offset += _limitStep),
+        limit: _limitStep,
       });
       pokemons.results.forEach((pokemon) => {
         this.pokemons.push(pokemon);
       });
       this.maxOffset = pokemons.count;
-      this.isFetching = false;
+      setTimeout(() => {
+        this.isFetching = false;
+      }, 1000);
     },
     handleScroll: async function (event) {
       await this.loadMorePokemons();
@@ -64,6 +81,9 @@ export default Vue.extend({
 });
 </script>
 <style scoped>
+* {
+  font-family: "Roboto";
+}
 .divider {
   height: 100px;
   width: 100px;

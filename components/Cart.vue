@@ -51,26 +51,26 @@ a {
 *:before,
 *:after {
   box-sizing: border-box;
-  font: 14px "Roboto", Arial, sans-serif;
 }
 
 .container {
-  position: absolute;
+  position: fixed;
   z-index: 999;
   top: 100px;
   right: 20px;
 }
 
 .lighter-text {
-  color: #abb0be;
+  color: #7a7a7a;
 }
 
 .main-color-text {
-  color: #6394f8;
+  color: #f33;
+  font-weight: 600;
 }
 
 .badge {
-  background-color: #6394f8;
+  background-color: #f33;
   border-radius: 10px;
   color: white;
   display: inline-block;
@@ -122,7 +122,7 @@ a {
   font-size: 16px;
 }
 .shopping-cart-items .item-price {
-  color: #6394f8;
+  color: #f33;
   margin-right: 8px;
 }
 .shopping-cart-items .item-quantity {
@@ -151,7 +151,7 @@ a {
 }
 
 .button {
-  background: #6394f8;
+  background: #f33;
   color: white;
   text-align: center;
   padding: 12px;
@@ -162,7 +162,7 @@ a {
   margin: 25px 0 15px 0;
 }
 .button:hover {
-  background: lighten(#6394f8, 3%);
+  background: lighten(#f33, 3%);
 }
 
 .clearfix:after {
