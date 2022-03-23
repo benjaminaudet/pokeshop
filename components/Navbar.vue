@@ -10,7 +10,7 @@
         </a>
       </div>
     </nav>
-    <Cart v-show="menuDisplay" :fn="fn" />
+    <Cart v-show="menuDisplay" />
   </div>
 </template>
 

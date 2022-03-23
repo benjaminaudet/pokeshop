@@ -19,9 +19,11 @@
             >Quantity: {{ article.quantity }} x {{ article.price }}€</span
           >
         </li>
-        <div v-show="articlesCount === 0">The shopping cart is empty.</div>
       </ul>
-      <a class="button">Checkout</a>
+      <div class="buttons">
+        <a class="button" v-on:click="emptyCart()">Empty cart</a>
+        <a class="button">Checkout</a>
+      </div>
     </div>
   </div>
 </template>
@@ -49,10 +51,20 @@ export default {
   computed: {
     totalPrice: function () {
       let price = 0;
+      console.log(this.articlesInCart);
+      if (!this.articlesInCart) {
+        return 0;
+      }
       this.articlesInCart.forEach((article) => {
         price += article.quantity * article.price;
       });
       return price;
+    },
+  },
+  methods: {
+    emptyCart: function () {
+      this.articlesInCart = [];
+      localStorage.setItem("articles", null);
     },
   },
 };
@@ -86,7 +98,13 @@ ul {
   color: #f33;
   font-weight: 600;
 }
-
+.buttons {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: stretch;
+  justify-content: space-evenly;
+}
 .badge {
   background-color: #f33;
   border-radius: 10px;
