@@ -1,21 +1,31 @@
 <template>
   <div>
-    <div class="limit-step-container">
-      <strong>Load pokemons by chunks of :</strong>
-      <select
-        class="limit-step-select"
-        v-model="limitStepSelected"
-        @change="onChange($event)"
-      >
-        <option value="">{{ baseLimitStep }}</option>
-        <option v-for="i in Array(4).length" :key="i">
-          {{ baseLimitStep + i * baseLimitStep }}
-        </option>
-      </select>
+    <div class="filters">
+      <div class="limit-step-container">
+        <strong>Load pokemons by chunks of :</strong>
+        <select
+          class="limit-step-select"
+          v-model="limitStepSelected"
+          @change="onChange($event)"
+        >
+          <option value="">{{ baseLimitStep }}</option>
+          <option v-for="i in Array(4).length" :key="i">
+            {{ baseLimitStep + i * baseLimitStep }}
+          </option>
+        </select>
+      </div>
+      <div class="search-bar">
+        <strong>Name:</strong>
+        <input
+          type="text"
+          placeholder="search a pokemon by name"
+          v-model="search"
+        />
+      </div>
     </div>
     <div class="container">
       <div
-        v-for="pokemon in pokemons"
+        v-for="pokemon in pokemonsList"
         v-bind:key="pokemon.name"
         class="pokemons-container"
       >
@@ -39,9 +49,22 @@ export default {
       menuDisplay: false,
       totalPrice: 0,
       limitStepSelected: "",
+      search: "",
     };
   },
   computed: {
+    pokemonsList: function () {
+      if (this.search === "") {
+        return this.pokemons;
+      } else {
+        return this.pokemons.filter((pokemon) => {
+          if (pokemon.name.includes(this.search)) {
+            return true;
+          }
+          return false;
+        });
+      }
+    },
     pokemonsCount: function () {
       return this.pokemons.length;
     },
@@ -100,7 +123,14 @@ h3 {
   -ms-overflow-style: none;
   scrollbar-width: none; /* Firefox */
 }
-.container {
+.filters {
+  justify-content: space-evenly;
+  display: flex;
+  align-content: flex-end;
+  flex-direction: row;
+}
+.container,
+.filter {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
