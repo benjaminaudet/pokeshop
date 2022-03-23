@@ -1,9 +1,9 @@
 <template>
   <div>
     <nav class="nav">
-      <div class="logo">
+      <NuxtLink :to="`/`" class="logo">
         <img src="../static/logo.png" />
-      </div>
+      </NuxtLink>
       <div class="menu">
         <a v-on:click="toggleMenu">
           <img src="../static/cart.png" />
@@ -22,7 +22,6 @@ export default {
   components: {
     Cart: Cart,
   },
-  props: ["fn"],
   data: () => {
     return {
       menuDisplay: false,

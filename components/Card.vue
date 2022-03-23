@@ -3,14 +3,17 @@
     <div v-if="pokemonData.id" class="card">
       <div class="card__content">
         <div class="card__title">{{ pokemonData.name }}</div>
-      <img
-        class="card__image card__image--fence"
-        :src="pokemonData.sprites.other['official-artwork'].front_default"
-      />
+        <div class="card__image">
+          <img
+            class="card__image--fence"
+            :src="pokemonData.sprites.other['dream_world'].front_default"
+          />
+        </div>
         <p class="card__text">
           <ul>
             <li>
-              <strong>id:</strong> {{pokemonData.id}}
+              <strong>id:</strong> #<span v-for="i in 4 - String(pokemonData.id).length" :key="i">0</span
+            >{{ pokemonData.id }}
             </li>
             <li>
               <strong>Types:</strong>
@@ -23,7 +26,9 @@
             </li>
           </ul>
         </p>
-        <button class="btn btn--block card__btn">See in details</button>
+        <div class="card__button">
+          <NuxtLink :to="`/pokemon/${this.pokemon.name}`" class="btn btn--block card__btn">See in details</NuxtLink>
+        </div>
       </div>
     </div>
   </li>
@@ -46,7 +51,7 @@ export default {
   async fetch() {
     const pokemon = await P.getPokemonByName(this.pokemon.name);
     this.pokemonData = pokemon;
-    console.log(pokemon.id);
+    console.log(pokemon);
   },
   fetchOnServer: false,
 };
@@ -72,6 +77,9 @@ img {
 }
 
 .btn {
+  font-style: none;
+  text-decoration: none;
+  text-align: center;
   background-color: white;
   border: 1px solid #cccccc;
   border-radius: 1rem;
@@ -101,6 +109,13 @@ img {
   display: flex;
   padding: 1rem;
 }
+.card__button {
+  position: relative;
+}
+.card__button button {
+  position: absolute;
+  bottom: -8vh;
+}
 
 .card {
   background-color: white;
@@ -108,8 +123,8 @@ img {
   box-shadow: 0 0px 12px 3px rgb(143 143 143 / 50%);
   display: flex;
   flex-direction: column;
-  width: 190px;
-  height: 330px;
+  width: 220px;
+  height: 372px;
   overflow: hidden;
 }
 
@@ -120,6 +135,13 @@ img {
   padding: 1rem;
 }
 .card__image {
+  height: 170px;
+  display: flex;
+  justify-content: center;
+}
+.card__image img {
+  max-height: 150px;
+  max-width: 150px;
   margin-top: 20px;
   background-position: center center;
   background-repeat: no-repeat;
@@ -127,7 +149,6 @@ img {
   border-top-left-radius: 0.25rem;
   border-top-right-radius: 0.25rem;
   filter: contrast(70%);
-  width: 300px;
   position: relative;
   transition: filter 0.5s cubic-bezier(0.43, 0.41, 0.22, 0.91);
 }
@@ -146,6 +167,10 @@ img {
   text-align: left;
   text-transform: capitalize;
 }
+.card__text strong {
+  text-transform: none;
+}
+
 ul,
 li {
   margin: 0;

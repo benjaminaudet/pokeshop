@@ -3,42 +3,57 @@
   <div class="container">
     <div class="shopping-cart">
       <div class="shopping-cart-header">
-        <i class="fa fa-shopping-cart cart-icon"></i
-        ><span class="badge">{{ articlesInCart.length }}</span>
         <div class="shopping-cart-total">
           <span class="lighter-text">Total:</span>
           <span class="main-color-text">{{ totalPrice }}€</span>
         </div>
       </div>
-      <!-- <ul class="shopping-cart-items">
-        <li class="clearfix" v-for="article in articles" v-bind:key="article.id">
-          <img
-            :src="article.img"
-            :alt="article.name"
-          />
-          <span class="item-name">{{article.name}}</span>
-          <span class="item-price">{{article.price}}€</span>
-          <span class="item-quantity">Quantity: {{article.quantity}}</span>
+      <ul class="shopping-cart-items">
+        <li
+          class="clearfix"
+          v-for="article in articlesInCart"
+          v-bind:key="article.id"
+        >
+          <span class="item-name">{{ article.name }}</span>
+          <span class="item-quantity"
+            >Quantity: {{ article.quantity }} x {{ article.price }}€</span
+          >
         </li>
-        <div v-show="articlesCount === 0">
-          The shopping cart is empty.
-        </div>
-      </ul> -->
-      <a class="button" v-on:click="fn()">Checkout</a>
+        <div v-show="articlesCount === 0">The shopping cart is empty.</div>
+      </ul>
+      <a class="button">Checkout</a>
     </div>
   </div>
 </template>
 
 <script>
+const Pokedex = require("pokeapi-js-wrapper");
+const P = new Pokedex.Pokedex();
+
 export default {
   name: "Cart",
-  props: ["fn"],
   data: () => {
     return {
       articlesInCart: [],
       menuDisplay: false,
-      totalPrice: 0,
     };
+  },
+  mounted() {
+    try {
+      console.log(localStorage.getItem("articles"));
+      this.articlesInCart = JSON.parse(localStorage.getItem("articles") || "");
+    } catch (e) {
+      console.log(e);
+    }
+  },
+  computed: {
+    totalPrice: function () {
+      let price = 0;
+      this.articlesInCart.forEach((article) => {
+        price += article.quantity * article.price;
+      });
+      return price;
+    },
   },
 };
 </script>
@@ -51,6 +66,9 @@ a {
 *:before,
 *:after {
   box-sizing: border-box;
+}
+ul {
+  overflow-y: scroll;
 }
 
 .container {
@@ -93,13 +111,13 @@ a {
   box-shadow: #505050 0px 0px 55px -6px;
 }
 .shopping-cart-header {
-  border-bottom: 1px solid #e8e8e8;
   padding-bottom: 15px;
 }
 .shopping-cart-total {
   float: right;
 }
 .shopping-cart-items {
+  height: 500px;
   padding-top: 20px;
 }
 .shopping-cart-items li {
@@ -119,6 +137,7 @@ a {
 .shopping-cart-items .item-name {
   display: block;
   padding-top: 10px;
+  text-transform: capitalize;
   font-size: 16px;
 }
 .shopping-cart-items .item-price {

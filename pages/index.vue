@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar :fn="loadMorePokemons" />
+    <Navbar />
     <div class="divider" />
     <Shopping
       v-on:limit-step-selected="onChangeLimitStepSelected"
@@ -52,7 +52,6 @@ export default Vue.extend({
       if (!_limitStep) {
         _limitStep = this.limitStep;
       }
-      console.log(_limitStep);
       this.isFetching = true;
       const pokemons = await P.getPokemonsList({
         offset: (this.offset += _limitStep),
