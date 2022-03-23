@@ -42,7 +42,6 @@ export default {
   },
   mounted() {
     try {
-      console.log(localStorage.getItem("articles"));
       this.articlesInCart = JSON.parse(localStorage.getItem("articles") || "");
     } catch (e) {
       console.log(e);
@@ -51,7 +50,6 @@ export default {
   computed: {
     totalPrice: function () {
       let price = 0;
-      console.log(this.articlesInCart);
       if (!this.articlesInCart) {
         return 0;
       }

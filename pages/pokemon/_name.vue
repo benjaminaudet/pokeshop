@@ -92,7 +92,6 @@ export default Vue.extend({
   }),
   async fetch() {
     this.pokemon = await P.getPokemonByName(this.$route.params.name);
-    console.log(this.pokemon);
   },
   fetchOnServer: false,
   methods: {
